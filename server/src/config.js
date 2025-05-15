@@ -1,11 +1,8 @@
 const mongoose = require('mongoose')
 
-const DB = async () => {
+const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/chat-app' ,{
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        })
+        await mongoose.connect('mongodb://127.0.0.1:27017/chat-app')
         console.log("Connection Success with MongoDB");
     } catch (e) {
         console.log("Connection error " , e );
@@ -13,4 +10,6 @@ const DB = async () => {
     }
 }
 
-export default DB
+
+
+module.exports = connectDB

@@ -1,10 +1,8 @@
-import connectDB from './config'
-
 const express = require('express')
 const { createServer } = require("http")
 const { Server } = require('socket.io')
 const cors = require('cors')
-
+const connectDB = require('./config')
 
 const app = express()
 const httpServer = createServer(app)
@@ -20,18 +18,17 @@ app.get('/' , (req, res)=> {
     res.send('Socket.io running')
 })
 
-DB()
 
-const messages = []
 const clientHandlers = require('./sockets/handlers')
 const testHandlers = require('./sockets/testHandler')
 
+connectDB().then(async () => {
+  console.log("Db connected");
+});
 
 io.on("connection" , (socket) => {
-
-    clientHandlers(io , socket, messages)
-    testHandlers(io, socket)
-
+    clientHandlers(io , socket)
+    // testHandlers(io, socket)
 })
 
 const PORT = process.env.PORT || 3000

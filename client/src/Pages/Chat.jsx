@@ -13,6 +13,8 @@ const Chat = () => {
     // Historique
     socket.on("chat history" , (data) => {
       setMessages(data)
+      console.log("data" , data);
+      console.log("messages" , messages);
     })
     
     socket.on("chat message", (data) => {
@@ -43,7 +45,7 @@ const Chat = () => {
       {messages.length === 0 && <p>Aucun message</p>}
       {messages.map((m, i) => (
         <Message key={i}>
-          <strong>{m.username}</strong> {m.text}
+          <strong>{m.sender}</strong> {m.content}
         </Message>
       ))}
       <div>
