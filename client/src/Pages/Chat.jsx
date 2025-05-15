@@ -10,23 +10,30 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    socket.on('chat message', (data) => {
-      console.log('Message reçu :', data);
-      setMessages((prev) => [...prev, data]);
-    });
-
+    // Historique
+    socket.on("chat history" , (data) => {
+      setMessages(data)
+    })
+    
+    socket.on("chat message", (data) => {
+      setMessages((prev) => [...prev , data])
+    })
+    
     socket.on("hello" , (arg , callback) => {
       console.log(arg)
       callback("got it")
     })
 
-    return () => socket.off('chat message');
+    return () => {
+      socket.off('chat message')
+      socket.off('chat history')
+    };
   }, []);
 
   const sendMessage = () => {
     if (input.trim()) {
-      socket.emit('chat message', { username, message: input });
-      setMessages((prev) => [...prev, {username,text: input}])
+      socket.emit('chat message', { username , text: input });
+      setMessages((prev) => [...prev, {username ,text: input}])
       setInput('');
     }
   };
@@ -39,8 +46,12 @@ const Chat = () => {
           <strong>{m.username}</strong> {m.text}
         </Message>
       ))}
-      <input value={input} onChange={(e) => setInput(e.target.value)} />
-      <button onClick={sendMessage}>Envoyer</button>
+      <div>
+        <input value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input value={input} onChange={(e) => setInput(e.target.value)} />
+        <button onClick={sendMessage}>Envoyer</button>
+      </div>
+      
     </div>
   );
 };
