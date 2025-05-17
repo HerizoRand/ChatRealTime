@@ -20,10 +20,10 @@ const Count = () => {
     }, [socket])
 
     const addCount = () =>{
-        socket.emit('count add')
+        socket.emit('count update', { action: 'add'})
     }
     const minusCount = () => {
-        socket.emit('count minus')
+        socket.emit('count update',  { action: 'add'})
     }
 
 

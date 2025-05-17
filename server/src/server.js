@@ -8,7 +8,7 @@ const app = express()
 const httpServer = createServer(app)
 const io = new Server(httpServer , {
     cors: {
-        origin: 'http://localhost:5173',
+        origin: '*',
         methods: ['GET' , 'POST']
     }
 })
@@ -17,6 +17,9 @@ app.use(cors())
 app.get('/' , (req, res)=> {
     res.send('Socket.io running')
 })
+app.get("/test", (req, res) => {
+  res.send("ok depuis le backend !");
+});
 
 
 const clientHandlers = require('./sockets/handlers')
@@ -32,6 +35,6 @@ io.on("connection" , (socket) => {
 })
 
 const PORT = process.env.PORT || 3000
-httpServer.listen(PORT , () => {
+httpServer.listen(PORT , '0.0.0.0' , () => {
     console.log(`______Server connected on port ${PORT}`)
 })
