@@ -10,18 +10,16 @@ module.exports = async (io , socket) => {
 
     socket.emit('count history' , count)
 
-    socket.on('count update' , async ()=> {
+    socket.on('count add' , async ()=> {
         count.value += 1
         await count.save
 
         io.emit('count updated' , count.value)
     })
+    socket.on('count minus' , async () => {
+        count.value -= 1
+        await count.save
 
-    socket.emit("hello" , "world" , (response)=> {
-        console.log("Reponse du client" , response)
+        io.emit('count updated' , count.value)
     })
 }
-
-// methode 
-// prendre existant dans base 
-// mise a jour existant dans base

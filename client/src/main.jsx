@@ -3,10 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import Chat from './Pages/Chat.jsx'
 import Count from './Pages/Count.jsx'
+import { SocketProvider } from './sockets/SocketContext.jsx'
 
 createRoot(document.getElementById('root')).render( 
     <div>
         <Chat />
-        <Count />
+        <SocketProvider>
+            <Count />
+        </SocketProvider>
     </div>
 )

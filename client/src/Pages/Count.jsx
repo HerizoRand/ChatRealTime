@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
+import { useContext , useEffect, useState } from 'react'
+import { SocketContext } from '../sockets/SocketContext'
 
-const socket = io('http://localhost:3000')
 
 const Count = () => {
+    const socket = useContext(SocketContext)
     const [count , setCount] = useState(0)
+    console.log(count);
     
     useEffect (() => {
-        socket.on("count history" , (count) => {
-            setCount(count.value)
-            console.log('Historique' , count.value)
+        socket.on("count history" , (data) => {
+            setCount(data.value)
         })
-        socket.on("count updated" , (count) => {
-            setCount(count)
-            console.log('Mise a jour' , count)
-         })
+        socket.on("count updated" , setCount)
 
         return () => {
             socket.off('count history')
             socket.off('count updated')
         }
-    }, [])
+    }, [socket])
 
-    const updateCount = () =>{
-        socket.emit('count update')
+    const addCount = () =>{
+        socket.emit('count add')
+    }
+    const minusCount = () => {
+        socket.emit('count minus')
     }
 
 
@@ -31,7 +31,10 @@ const Count = () => {
     <div>
         <h1>{count}</h1>
         <button
-            onClick={updateCount}
+            onClick={addCount}
+        > Ajouter le compteur</button>
+        <button
+            onClick={minusCount}
         > Ajouter le compteur</button>
     </div>
   )
