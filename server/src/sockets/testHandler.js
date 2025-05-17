@@ -1,5 +1,27 @@
-module.exports = (io , socket) => {
+const Count = require('../models/Count')
+
+module.exports = async (io , socket) => {
+    const COUNT_ID = 'main'
+
+    let count = await Count.findOne({ id : COUNT_ID})
+    if (!count) {
+        count = await Count.create({ id: COUNT_ID, value: 0})
+    }
+
+    socket.emit('count history' , count)
+
+    socket.on('count update' , async ()=> {
+        count.value += 1
+        await count.save
+
+        io.emit('count updated' , count.value)
+    })
+
     socket.emit("hello" , "world" , (response)=> {
         console.log("Reponse du client" , response)
     })
 }
+
+// methode 
+// prendre existant dans base 
+// mise a jour existant dans base

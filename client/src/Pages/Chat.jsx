@@ -14,7 +14,6 @@ const Chat = () => {
     socket.on("chat history" , (data) => {
       setMessages(data)
       console.log("data" , data);
-      console.log("messages" , messages);
     })
     
     socket.on("chat message", (data) => {

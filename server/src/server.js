@@ -28,7 +28,7 @@ connectDB().then(async () => {
 
 io.on("connection" , (socket) => {
     clientHandlers(io , socket)
-    // testHandlers(io, socket)
+    testHandlers(io, socket)
 })
 
 const PORT = process.env.PORT || 3000

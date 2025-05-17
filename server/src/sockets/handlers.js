@@ -1,6 +1,7 @@
 const Message = require('../models/Messages')
 const User = require('../models/Users')
 
+
 module.exports = async (io , socket) => {
     // Client connected
     console.log("New Client connected : ", socket.id)
@@ -43,6 +44,10 @@ module.exports = async (io , socket) => {
         } catch (e) {
             console.error('Erreur lors de l’enregistrement du message :', e);
         }
+    }
+
+    const notificationFunction = (data) => {
+        io.emit('dataUpdate' , data)
     }
     
 
