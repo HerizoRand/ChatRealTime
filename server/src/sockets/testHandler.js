@@ -10,7 +10,20 @@ module.exports = async (io , socket) => {
 
     socket.emit('count history' , count)
 
-    // socket.on('count add' , async ()=> {
+    socket.on('count update' , async ({ action }) => {
+        const countDoc = await Count.findOne({ id: COUNT_ID })
+        
+        if ( action == 'add' ) countDoc.value++
+        else if ( action == 'minus') countDoc.value--
+        else if ( action == 'null') countDoc.value = 0
+
+        await countDoc.save()
+
+        io.emit('count updated' , countDoc.value)
+    })
+}
+
+  // socket.on('count add' , async ()=> {
     //     count.value += 1
     //     await count.save
 
@@ -22,15 +35,3 @@ module.exports = async (io , socket) => {
 
     //     io.emit('count updated' , count.value)
     // })
-
-    socket.on('count update' , async ({ action }) => {
-        const countDoc = await Count.findOne({ id: COUNT_ID })
-        
-        if ( action == 'add' ) countDoc.value++
-        else if ( action == 'minus') countDoc.value--
-
-        await countDoc.save()
-
-        io.emit('count updated' , countDoc.value)
-    })
-}

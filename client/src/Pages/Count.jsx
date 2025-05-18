@@ -23,7 +23,10 @@ const Count = () => {
         socket.emit('count update', { action: 'add'})
     }
     const minusCount = () => {
-        socket.emit('count update',  { action: 'add'})
+        socket.emit('count update',  { action: 'minus'})
+    }
+    const nullCount = () => {
+        socket.emit('count update', { action: 'null'})
     }
 
 
@@ -35,7 +38,10 @@ const Count = () => {
         > Ajouter le compteur</button>
         <button
             onClick={minusCount}
-        > Ajouter le compteur</button>
+        > Minus le compteur</button>
+        <button
+            onClick={nullCount}
+        > Reinitialiser</button>
     </div>
   )
 }
