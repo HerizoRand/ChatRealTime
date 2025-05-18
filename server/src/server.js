@@ -3,6 +3,7 @@ const { createServer } = require("http")
 const { Server } = require('socket.io')
 const cors = require('cors')
 const connectDB = require('./config')
+const userRoutes = require('./routes/userRoutes')
 
 const app = express()
 const httpServer = createServer(app)
@@ -13,6 +14,10 @@ const io = new Server(httpServer , {
     }
 })
 
+connectDB().then(async () => {
+  console.log("Db connected");
+});
+
 app.use(cors())
 app.get('/' , (req, res)=> {
     res.send('Socket.io running')
@@ -20,14 +25,11 @@ app.get('/' , (req, res)=> {
 app.get("/test", (req, res) => {
   res.send("ok depuis le backend !");
 });
-
+// User Route
+app.use('/user', userRoutes)
 
 const clientHandlers = require('./sockets/handlers')
 const testHandlers = require('./sockets/testHandler')
-
-connectDB().then(async () => {
-  console.log("Db connected");
-});
 
 io.on("connection" , (socket) => {
     clientHandlers(io , socket)
